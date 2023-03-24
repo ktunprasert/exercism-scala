@@ -1,6 +1,3 @@
 object Twofer {
-  def twofer(name: String = ""): String = name match {
-    case "" => "One for you, one for me."
-    case _ => s"One for $name, one for me."
-  }
+  def twofer(name: String = "you"): String = s"One for $name, one for me."
 }
