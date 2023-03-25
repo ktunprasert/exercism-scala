@@ -1,19 +1,15 @@
 import scala.util.matching.Regex
 
 object Bob {
-  def response(statement: String): String = {
-    val stripped = statement.replaceAll(raw"\s", "")
-    if (stripped.length == 0) return "Fine. Be that way!"
-
-    val alpha = statement.replaceAll(raw"[^a-zA-Z]", "")
-    val isQuestion = stripped.last == '?'
-
-    val upcase = "[A-Z]".r.findAllIn(statement).toList
-    (isQuestion, alpha.length == upcase.length && upcase.length > 0) match {
-      case (true, true) => "Calm down, I know what I'm doing!"
-      case (false, true) => "Whoa, chill out!"
-      case (true, false) => "Sure."
-      case _ => "Whatever."
-    }
+  def response(statement: String): String = statement.trim match {
+    case s if s.isEmpty => "Fine. Be that way!"
+    case s if shouting(s) && questioning(s) => "Calm down, I know what I'm doing!"
+    case s if shouting(s) => "Whoa, chill out!"
+    case s if questioning(s) => "Sure."
+    case _ => "Whatever."
   }
+
+  def shouting(statement: String): Boolean = statement.toUpperCase == statement && statement.toLowerCase.exists(('a' to 'z').toSet.contains(_))
+
+  def questioning(statement: String): Boolean = statement.last == '?'
 }
